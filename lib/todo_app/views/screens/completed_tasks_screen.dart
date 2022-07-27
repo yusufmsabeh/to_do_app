@@ -11,14 +11,12 @@ class CompleteTasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return tasks.where((element) => element.isComplete!).isEmpty
+    return tasks.isEmpty
         ? Lottie.asset('assets/animations/empty.json')
         : ListView.builder(
-            itemCount: tasks.where((element) => element.isComplete!).length,
+            itemCount: tasks.length,
             itemBuilder: (context, index) {
-              return TaskWidget(
-                  tasks.where((element) => element.isComplete!).toList()[index],
-                  function);
+              return TaskWidget(tasks.toList()[index], function);
             });
   }
 }

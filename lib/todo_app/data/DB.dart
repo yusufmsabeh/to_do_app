@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
@@ -22,7 +23,7 @@ class Connection {
 
   Future<Database> createDataBase() async {
     String databasePath = await getDatabasesPath();
-    String databaseName = 'todo_app2';
+    String databaseName = 'todo_app4';
     String path = join(databaseName, databaseName);
 
     Database database = await openDatabase(path,
@@ -48,13 +49,13 @@ class Connection {
   }
 
   insertOneTask(TaskModel taskModel) async {
-    int id = await database!.insert(tabelName, taskModel.toMap(taskModel));
-    log(id.toString());
+    int id = await database!.insert(tabelName, taskModel.toMap());
+    taskModel.copy(id);
   }
 
   Future<List<TaskModel>> selectAllTask() async {
     List allTasks = await database!.query(tabelName);
-
+    print(allTasks);
     return allTasks.map((e) {
       return TaskModel.fromMap(e);
     }).toList();
@@ -76,5 +77,11 @@ class Connection {
     return allTasks.map((e) {
       return TaskModel.fromMap(e);
     }).toList();
+  }
+
+  UpdateComplete(TaskModel taskModel) async {
+    int count = await database!.update(tabelName, taskModel.toMap(),
+        where: "$taskID=?", whereArgs: [taskModel.id]);
+    print(count);
   }
 }

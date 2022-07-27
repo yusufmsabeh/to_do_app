@@ -25,18 +25,32 @@ class _MainPageState extends State<MainTodoPage>
     tasks = await Connection.connection.selectAllTask();
     completeTasks = await Connection.connection.selectCompletedTasks();
     incompleteTasks = await Connection.connection.selectIncompletedTasks();
-    log("refreshing ");
-    // await Future.delayed(const Duration(seconds: 3), () {});
-    log("delay done");
+
     setState(() {});
   }
 
   changeTaskStatus(TaskModel taskModel) async {
-    await RefreshData();
     int index = tasks.indexOf(taskModel);
     tasks[index].isComplete = !tasks[index].isComplete!;
+    await Connection.connection.UpdateComplete(taskModel);
 
-    setState(() {});
+    RefreshData();
+  }
+
+  changeTaskStatusComplete(TaskModel taskModel) async {
+    int index = completeTasks.indexOf(taskModel);
+    completeTasks[index].isComplete = !completeTasks[index].isComplete!;
+    await Connection.connection.UpdateComplete(taskModel);
+
+    RefreshData();
+  }
+
+  changeTaskStatusInComplete(TaskModel taskModel) async {
+    int index = incompleteTasks.indexOf(taskModel);
+    incompleteTasks[index].isComplete = !incompleteTasks[index].isComplete!;
+    await Connection.connection.UpdateComplete(taskModel);
+
+    RefreshData();
   }
 
   removeTask(TaskModel taskModel) {
@@ -88,9 +102,9 @@ class _MainPageState extends State<MainTodoPage>
         },
       ),
       body: TabBarView(controller: tabController!, children: [
-        AllTasksScreen(RefreshData, tasks),
-        CompleteTasksScreen(changeTaskStatus, completeTasks),
-        InCompleteTasksScreen(changeTaskStatus, incompleteTasks)
+        AllTasksScreen(changeTaskStatus, tasks),
+        CompleteTasksScreen(changeTaskStatusComplete, completeTasks),
+        InCompleteTasksScreen(changeTaskStatusInComplete, incompleteTasks)
       ]),
     );
   }
