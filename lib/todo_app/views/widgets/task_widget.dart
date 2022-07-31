@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/todo_app/models/task_model.dart';
+import 'package:todo_app/todo_app/providers/provider.dart';
 
 class TaskWidget extends StatelessWidget {
   TaskModel taskModel;
-  Function function;
-  TaskWidget(this.taskModel, this.function);
+
+  TaskWidget(this.taskModel);
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -13,7 +15,8 @@ class TaskWidget extends StatelessWidget {
       child: CheckboxListTile(
         value: taskModel.isComplete,
         onChanged: (v) {
-          function(taskModel);
+          Provider.of<DBProvider>(context, listen: false)
+              .updateComplete(taskModel);
         },
         title: Text(taskModel.title!),
       ),

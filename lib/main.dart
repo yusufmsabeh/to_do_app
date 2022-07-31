@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/todo_app/data/DB.dart';
+import 'package:todo_app/todo_app/providers/provider.dart';
 import 'package:todo_app/todo_app/views/screens/main_screen.dart';
 
 void main() async {
@@ -14,8 +16,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: MainTodoPage(),
+    return ChangeNotifierProvider<DBProvider>(
+      create: (context) {
+        return DBProvider();
+      },
+      child: MaterialApp(
+        home: MainTodoPage(),
+      ),
     );
   }
 }

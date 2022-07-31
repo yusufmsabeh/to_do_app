@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_app/todo_app/data/DB.dart';
 import 'package:todo_app/todo_app/data/data_repo.dart';
 import 'package:todo_app/todo_app/models/task_model.dart';
+import 'package:todo_app/todo_app/providers/provider.dart';
 
 class NewTaskScreen extends StatelessWidget {
-  Function function;
-  NewTaskScreen(this.function);
   String content = "";
   @override
   Widget build(BuildContext context) {
@@ -21,9 +21,9 @@ class NewTaskScreen extends StatelessWidget {
             ),
             ElevatedButton(
                 onPressed: () async {
-                  await Connection.connection
-                      .insertOneTask(TaskModel(title: content));
-                  function();
+                  TaskModel taskModel = TaskModel(title: content);
+                  Provider.of<DBProvider>(context, listen: false)
+                      .createNewTask(taskModel);
                   Navigator.pop(context);
                 },
                 child: Text('Add New Task'))

@@ -18,6 +18,10 @@ class TaskModel {
     this.id = id;
   }
 
+  ChangeIsComplete() {
+    this.isComplete = !this.isComplete!;
+  }
+
   Map<String, dynamic> toMap() {
     return {
       Connection.taskNameColumn: title,

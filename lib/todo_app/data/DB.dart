@@ -23,8 +23,9 @@ class Connection {
 
   Future<Database> createDataBase() async {
     String databasePath = await getDatabasesPath();
-    String databaseName = 'todo_app4';
-    String path = join(databaseName, databaseName);
+    print("----------------" + databasePath);
+    String databaseName = 'todo_app6';
+    String path = join(databasePath, databaseName);
 
     Database database = await openDatabase(path,
         onCreate: _onCreate, version: 1, onOpen: _onOpen);
@@ -82,6 +83,8 @@ class Connection {
   UpdateComplete(TaskModel taskModel) async {
     int count = await database!.update(tabelName, taskModel.toMap(),
         where: "$taskID=?", whereArgs: [taskModel.id]);
-    print(count);
   }
+  // deleteTask(int id) async{
+  //   await database!.delete(tabelName,where: ("$"))
+  // }
 }
